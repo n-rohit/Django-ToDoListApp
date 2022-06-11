@@ -5,21 +5,12 @@
 
 {% if messages %}
     {% for message in messages %}
-        {% if message == 'Item Added to the List' %}
-            <div class="alert alert-success alert-dimissable" role="alert">
-                <button class="close" data-dismiss="alert">
-                    <small><sup>x</sup></small>
-                </button>
-                    {{ message }}
-            </div>
-        {% elif message == 'Item Deleted from the List' %}
-            <div class="alert alert-warning alert-dimissable" role="alert">
-                <button class="close" data-dismiss="alert">
-                    <small><sup>x</sup></small>
-                </button>
-                    {{ message }}
-            </div>
-        {% endif %}
+        <div class="alert alert-success alert-dimissable" role="alert">
+            <button class="close" data-dismiss="alert">
+                <small><sup>x</sup></small>
+            </button>
+                {{ message }}
+        </div>
     {% endfor %}
 {% endif %}
 <br>
@@ -28,14 +19,14 @@
         {% for things in all_items %}
             {% if things.completed %}
                 <tr class="table-secondary">
-                    <td class="strike">{{ things.item }}</td>
-                    <td><center>{{ things.completed }}</center></td>
+                    <td class="strike"><a href="{% url 'edit' things.id %}">{{ things.item }}</a></td>
+                    <td><center><a href="{% url 'uncross' things.id %}">Uncross</a></center></td>
                     <td><center><a class="btn btn-secondary" href="{% url 'delete' things.id %}">Delete</a></center></td>
                 </tr>
             {% else %}
                 <tr>
-                    <td>{{ things.item }}</td>
-                    <td><center>{{ things.completed }}</center></td>
+                    <td><a href="{% url 'edit' things.id %}">{{ things.item }}</a></td>
+                    <td><center><a href="{% url 'cross_off' things.id %}">Cross off</a></center></td>
                     <td><center><a class="btn btn-secondary" href="{% url 'delete' things.id %}">Delete</a></center></td>
                 </tr>
             {% endif %}

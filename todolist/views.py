@@ -10,7 +10,7 @@ def home(request):
         if form.is_valid():
             form.save()
             all_items = List.objects.all
-            messages.success(request, ('Item Added to the List'))
+            messages.success(request, ('Item Added to the List Successfully'))
             return render(request, 'home.html', {'all_items':all_items})
     else:
         all_items = List.objects.all
@@ -22,5 +22,29 @@ def about(request):
 def delete(request, list_id):
     item = List.objects.get(pk=list_id)
     item.delete()
-    messages.success(request, ('Item Deleted from the List'))
+    messages.success(request, ('Item Deleted from the List Successfully'))
     return redirect('home')
+
+def cross_off(request, list_id):
+    item = List.objects.get(pk=list_id)
+    item.completed = True
+    item.save()
+    return redirect('home')
+    
+def uncross(request, list_id):
+    item = List.objects.get(pk=list_id)
+    item.completed = False
+    item.save()
+    return redirect('home')
+
+def edit(request, list_id):
+    if request.method == 'POST':
+        item = List.objects.get(pk=list_id)
+        form = ListForm(request.POST or None, instance=item)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ('List Item Edited Successfully'))
+            return redirect('home')
+    else:
+        item = List.objects.get(pk=list_id)
+        return render(request, 'edit.html', {'item':item})
